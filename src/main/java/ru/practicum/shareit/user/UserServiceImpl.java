@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto addNewUser(UserDto user) {
         log.info("UserServiceImpl: Запрос на добавление пользователя {}", user);
-        if (validation(UserMapper.toUser(user))) {
+        if (isValid(UserMapper.toUser(user))) {
             User newUser = userInMemoryRepository.addNewUser(UserMapper.toUser(user));
             return UserMapper.toUserDto(newUser);
         }
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
         userInMemoryRepository.deleteUser(userId);
     }
 
-    private boolean validation(User user) {
+    private boolean isValid(User user) {
         boolean result = true;
         if (user.getName().isEmpty()) {
             result = false;

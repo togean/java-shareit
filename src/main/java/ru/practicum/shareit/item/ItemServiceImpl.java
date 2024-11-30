@@ -47,7 +47,7 @@ public class ItemServiceImpl implements ItemService {
         }
         Item newItem = ItemMapper.toItem(item);
         newItem.setOwner(userId);
-        if (validate(newItem)) {
+        if (isValid(newItem)) {
             newItem = itemInMemoryRepository.addNewItem(userId, newItem);
             return ItemMapper.toItemDto(newItem);
         }
@@ -79,7 +79,7 @@ public class ItemServiceImpl implements ItemService {
         return itemInMemoryRepository.searchItem(textToSearch);
     }
 
-    private boolean validate(Item item) {
+    private boolean isValid(Item item) {
         boolean result = true;
         if ((item.getDescription() == null) || (item.getName().isEmpty())) {
             result = false;
