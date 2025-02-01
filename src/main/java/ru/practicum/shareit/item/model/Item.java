@@ -5,7 +5,7 @@ import lombok.Data;
 import ru.practicum.shareit.user.model.User;
 
 @Entity
-@Table(name="items")
+@Table(name = "items")
 @Data
 public class Item {
     @Id
@@ -13,7 +13,7 @@ public class Item {
     private Integer id;
     @Column(name = "name", nullable = false, length = 100)
     private String name;
-    @Column(name = "description", nullable = false, length = 255)
+    @Column(name = "description", nullable = false)
     private String description;
     @Column(name = "is_available", nullable = false)
     private Boolean available;

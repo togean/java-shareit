@@ -8,23 +8,23 @@ import ru.practicum.shareit.user.model.User;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="bookings")
+@Table(name = "bookings")
 @Data
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name="start_date", nullable = false)
+    @Column(name = "start_date", nullable = false)
     private LocalDateTime start;
-    @Column(name="end_date", nullable = false)
+    @Column(name = "end_date", nullable = false)
     private LocalDateTime end;
     @OneToOne
-    @JoinColumn(name="item_id")
+    @JoinColumn(name = "item_id")
     private Item item;
     @OneToOne
-    @JoinColumn(name="booker_id")
+    @JoinColumn(name = "booker_id")
     private User booker;
-    @Column(name="status", nullable = false)
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 }

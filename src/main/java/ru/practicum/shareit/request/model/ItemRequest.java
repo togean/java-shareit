@@ -6,17 +6,17 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="requests")
+@Table(name = "requests")
 @Data
 public class ItemRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name="description", nullable = false, length = 255)
+    @Column(name = "description", nullable = false)
     private String description;
-    @Column(name="requester_id", nullable = false)
+    @Column(name = "requester_id", nullable = false)
     private Integer requestor;
-    @Column(name="created_time", nullable = false)
+    @Column(name = "created_time", nullable = false)
     private LocalDateTime created;
 }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
-    List<Item> findAllByOwner_id(Integer owner_id);
+    List<Item> findAllByOwner_id(Integer ownerId);
 
-    void deleteByOwner_id(Integer owner_id);
+    void deleteByOwner_id(Integer ownerId);
 }
