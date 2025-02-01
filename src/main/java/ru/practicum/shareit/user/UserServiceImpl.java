@@ -1,54 +1,52 @@
 package ru.practicum.shareit.user;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.ValidationException;
-import ru.practicum.shareit.item.dao.ItemInMemoryRepository;
-import ru.practicum.shareit.user.dao.UserInMemoryRepository;
+import ru.practicum.shareit.item.dao.ItemRepository;
+import ru.practicum.shareit.user.dao.UserRepository;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
-    private final ItemInMemoryRepository itemInMemoryRepository;
-    private final UserInMemoryRepository userInMemoryRepository;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final ItemRepository itemRepository;
 
     @Override
     public List<UserDto> getAllUsers() {
         log.info("UserServiceImpl: Запрос на получение всех пользователей");
-        return userInMemoryRepository.getAllUsers()
-                .stream()
-                .map(UserMapper::toUserDto)
-                .collect(Collectors.toList());
+        return userMapper.toListOfUserDto(userRepository.findAll());
     }
 
     @Override
-    public UserDto getUserById(long userId) {
+    public UserDto getUserById(Integer userId) {
         log.info("UserServiceImpl: Запрос на получение пользователя с ID={}", userId);
-        Optional<User> user = userInMemoryRepository.getUserById(userId);
-        return user.map(UserMapper::toUserDto).orElse(null);
+        Optional<User> user = userRepository.findById(userId);
+        return user.map(userMapper::toUserDto).orElse(null);
     }
 
     @Override
     public UserDto addNewUser(UserDto user) {
         log.info("UserServiceImpl: Запрос на добавление пользователя {}", user);
-        if (isValid(UserMapper.toUser(user))) {
-            User newUser = userInMemoryRepository.addNewUser(UserMapper.toUser(user));
-            return UserMapper.toUserDto(newUser);
+        if (isValid(userMapper.toUser(user))) {
+            User newUser = userRepository.save(userMapper.toUser(user));
+            return userMapper.toUserDto(newUser);
         }
         return null;
     }
 
     @Override
-    public UserDto changeUser(long userId, UserDto user) {
+    public UserDto changeUser(Integer userId, UserDto user) {
         log.info("UserServiceImpl: Запрос на обновление данных пользователя {}", user);
         //Сначала проверим, что нет другого пользователя с таким же email
         List<UserDto> listOfUsers = getAllUsers();
@@ -59,31 +57,41 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
-        User newUser = userInMemoryRepository.changeUser(userId, UserMapper.toUser(user));
-        return UserMapper.toUserDto(newUser);
+        Optional<User> newUser = userRepository.findById(userId);
+        if (newUser.isPresent()) {
+            if (user.getEmail() != null) {
+                newUser.get().setEmail(user.getEmail());
+            }
+            if (user.getName() != null) {
+                newUser.get().setName(user.getName());
+            }
+            if (isValid(newUser.get())) {
+                return userMapper.toUserDto(userRepository.save(newUser.get()));
+            }
+        }
+        return null;
     }
 
     @Override
-    public void deleteUser(long userId) {
+    @Transactional
+    public void deleteUser(Integer userId) {
         log.info("UserServiceImpl: Запрос на удаление пользователя с ID={}", userId);
-        //Сначала удаляем все вещи пользователя
-        itemInMemoryRepository.deleteAllUserItems(userId);
-        //Потом удаляем самого пользователя
-        userInMemoryRepository.deleteUser(userId);
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            itemRepository.deleteByOwner_id(userId);
+            userRepository.deleteById(userId);
+        }
     }
 
     private boolean isValid(User user) {
         boolean result = true;
         if (user.getName().isEmpty()) {
-            result = false;
             throw new ValidationException("Имя пользователя не может быть пустым");
         }
         if (user.getEmail().isEmpty()) {
-            result = false;
             throw new ValidationException("Email пользователя не может быть пустым");
         }
         if (!user.getEmail().contains("@")) {
-            result = false;
             throw new ValidationException("Неверный формат почтового адреса");
         }
         return result;

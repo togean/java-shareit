@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemDtoWithBookingsAndComments;
 
 import java.util.*;
 
@@ -17,13 +19,13 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public List<ItemDto> getItems(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public List<ItemDtoWithBookingsAndComments> getItems(@RequestHeader("X-Sharer-User-Id") Integer userId) {
         log.info("ItemController: Выполнение запроса на получение вещей пользователя c ID={}", userId);
         return itemService.getItems(userId);
     }
 
     @GetMapping("{itemId}")
-    public ItemDto getItem(@PathVariable(name = "itemId") long itemId) {
+    public ItemDtoWithBookingsAndComments getItem(@PathVariable(name = "itemId") Integer itemId) {
         log.info("ItemController: Выполнение запроса на получение вещи c ID={}", itemId);
         return itemService.getItem(itemId);
     }
@@ -39,23 +41,29 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto addItem(@RequestHeader("X-Sharer-User-Id") long userId,
+    public ItemDto addItem(@RequestHeader("X-Sharer-User-Id") Integer userId,
                            @RequestBody ItemDto item) {
         log.info("ItemController: Выполнение запроса добавление вещи {}", item);
         return itemService.addNewItem(userId, item);
     }
 
+    @PostMapping("/{itemId}/comment")
+    public CommentDto addNewComment(@RequestHeader("X-Sharer-User-Id") Integer authorId, @PathVariable Integer itemId, @RequestBody CommentDto newComment) {
+        log.info("ItemController: Запрос на добавление комментария к выбранной вещи: {}", itemId);
+        return itemService.addNewComment(authorId, itemId, newComment);
+    }
+
     @PatchMapping("{itemId}")
-    public ItemDto changeItem(@RequestHeader("X-Sharer-User-Id") long userId,
-                              @PathVariable(name = "itemId") long itemId,
+    public ItemDto changeItem(@RequestHeader("X-Sharer-User-Id") Integer userId,
+                              @PathVariable(name = "itemId") Integer itemId,
                               @RequestBody ItemDto item) {
         log.info("ItemController: Выполнение запроса обновление вещи с id={} на вещь: {}", itemId, item);
         return itemService.changeItem(userId, itemId, item);
     }
 
     @DeleteMapping("{itemId}")
-    public void deleteItem(@RequestHeader("X-Sharer-User-Id") long userId,
-                           @PathVariable(name = "itemId") long itemId) {
+    public void deleteItem(@RequestHeader("X-Sharer-User-Id") Integer userId,
+                           @PathVariable(name = "itemId") Integer itemId) {
         log.info("ItemController: Выполнение запроса удаление вещи с ID={}", itemId);
         itemService.deleteItem(userId, itemId);
     }
