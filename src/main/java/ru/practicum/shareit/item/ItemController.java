@@ -17,9 +17,10 @@ import java.util.*;
 @Slf4j
 public class ItemController {
     private final ItemService itemService;
+    private final String REQUESTHEADER = "X-Sharer-User-Id";
 
     @GetMapping
-    public List<ItemDtoWithBookingsAndComments> getItems(@RequestHeader("X-Sharer-User-Id") Integer userId) {
+    public List<ItemDtoWithBookingsAndComments> getItems(@RequestHeader(REQUESTHEADER) Integer userId) {
         log.info("ItemController: Выполнение запроса на получение вещей пользователя c ID={}", userId);
         return itemService.getItems(userId);
     }
@@ -41,20 +42,20 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto addItem(@RequestHeader("X-Sharer-User-Id") Integer userId,
+    public ItemDto addItem(@RequestHeader(REQUESTHEADER) Integer userId,
                            @RequestBody ItemDto item) {
         log.info("ItemController: Выполнение запроса добавление вещи {}", item);
         return itemService.addNewItem(userId, item);
     }
 
     @PostMapping("/{itemId}/comment")
-    public CommentDto addNewComment(@RequestHeader("X-Sharer-User-Id") Integer authorId, @PathVariable Integer itemId, @RequestBody CommentDto newComment) {
+    public CommentDto addNewComment(@RequestHeader(REQUESTHEADER) Integer authorId, @PathVariable Integer itemId, @RequestBody CommentDto newComment) {
         log.info("ItemController: Запрос на добавление комментария к выбранной вещи: {}", itemId);
         return itemService.addNewComment(authorId, itemId, newComment);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto changeItem(@RequestHeader("X-Sharer-User-Id") Integer userId,
+    public ItemDto changeItem(@RequestHeader(REQUESTHEADER) Integer userId,
                               @PathVariable(name = "itemId") Integer itemId,
                               @RequestBody ItemDto item) {
         log.info("ItemController: Выполнение запроса обновление вещи с id={} на вещь: {}", itemId, item);
@@ -62,7 +63,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/{itemId}")
-    public void deleteItem(@RequestHeader("X-Sharer-User-Id") Integer userId,
+    public void deleteItem(@RequestHeader(REQUESTHEADER) Integer userId,
                            @PathVariable(name = "itemId") Integer itemId) {
         log.info("ItemController: Выполнение запроса удаление вещи с ID={}", itemId);
         itemService.deleteItem(userId, itemId);
