@@ -61,6 +61,7 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    @Override
     public ItemDtoWithBookingsAndComments getItem(Integer itemId) {
         log.info("ItemServiceImpl: Запрос вещи с ID={}", itemId);
         Optional<Item> item = itemRepository.findById(itemId);

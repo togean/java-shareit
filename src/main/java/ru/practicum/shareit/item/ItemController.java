@@ -24,7 +24,7 @@ public class ItemController {
         return itemService.getItems(userId);
     }
 
-    @GetMapping("{itemId}")
+    @GetMapping("/{itemId}")
     public ItemDtoWithBookingsAndComments getItem(@PathVariable(name = "itemId") Integer itemId) {
         log.info("ItemController: Выполнение запроса на получение вещи c ID={}", itemId);
         return itemService.getItem(itemId);
@@ -53,7 +53,7 @@ public class ItemController {
         return itemService.addNewComment(authorId, itemId, newComment);
     }
 
-    @PatchMapping("{itemId}")
+    @PatchMapping("/{itemId}")
     public ItemDto changeItem(@RequestHeader("X-Sharer-User-Id") Integer userId,
                               @PathVariable(name = "itemId") Integer itemId,
                               @RequestBody ItemDto item) {
@@ -61,7 +61,7 @@ public class ItemController {
         return itemService.changeItem(userId, itemId, item);
     }
 
-    @DeleteMapping("{itemId}")
+    @DeleteMapping("/{itemId}")
     public void deleteItem(@RequestHeader("X-Sharer-User-Id") Integer userId,
                            @PathVariable(name = "itemId") Integer itemId) {
         log.info("ItemController: Выполнение запроса удаление вещи с ID={}", itemId);
