@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 public class ItemRequestMapper {
-    public ItemRequest toItemRequest(ItemRequestDto itemRequest, LocalDateTime createdTime, User requester){
+    public ItemRequest toItemRequest(ItemRequestDto itemRequest, LocalDateTime createdTime, User requester) {
         ItemRequest newItemRequest = new ItemRequest();
         newItemRequest.setId(itemRequest.getId());
         newItemRequest.setDescription(itemRequest.getDescription());
@@ -22,7 +22,7 @@ public class ItemRequestMapper {
         return newItemRequest;
     }
 
-    public ItemRequestDto toItemRequestDto(ItemRequest itemRequest){
+    public ItemRequestDto toItemRequestDto(ItemRequest itemRequest) {
         ItemRequestDto newItemRequestDto = new ItemRequestDto();
         newItemRequestDto.setId(itemRequest.getId());
         newItemRequestDto.setDescription(itemRequest.getDescription());
@@ -31,15 +31,15 @@ public class ItemRequestMapper {
         return newItemRequestDto;
     }
 
-    public List<ItemRequestDto> toListOfItemRequestDto(List<ItemRequest> itemRequestsList){
+    public List<ItemRequestDto> toListOfItemRequestDto(List<ItemRequest> itemRequestsList) {
         List<ItemRequestDto> newListOfItemRequestDto = new ArrayList<>();
-        for(ItemRequest request: itemRequestsList){
+        for (ItemRequest request : itemRequestsList) {
             newListOfItemRequestDto.add(toItemRequestDto(request));
         }
         return newListOfItemRequestDto;
     }
 
-    public ItemRequestDtoWithItem toItemRequestDtoWithItems(ItemRequest itemRequest, List<ItemDtoShortForRequest> items){
+    public ItemRequestDtoWithItem toItemRequestDtoWithItems(ItemRequest itemRequest, List<ItemDtoShortForRequest> items) {
         ItemRequestDtoWithItem itemRequestDtoWithItems = new ItemRequestDtoWithItem();
         itemRequestDtoWithItems.setId(itemRequest.getId());
         itemRequestDtoWithItems.setItems(items);

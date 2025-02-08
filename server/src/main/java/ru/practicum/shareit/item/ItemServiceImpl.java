@@ -93,16 +93,16 @@ public class ItemServiceImpl implements ItemService {
                 throw new NotFoundException("Такого пользователя нет");
             }
             log.info("!!! Проверка что есть request в JSON-е создания вещи. Сам JSON:{}", itemDto);
-            if(itemDto.getRequestId()!=null){
+            if (itemDto.getRequestId() != null) {
                 log.info("!!! Request в JSON-е создания вещи ПРИСУТСВУЕТ. Его ID={}", itemDto.getRequestId());
                 Optional<ItemRequest> itemRequest = itemRequestRepository.findById(itemDto.getRequestId());
-                if(itemRequest.isPresent()) {
+                if (itemRequest.isPresent()) {
                     log.info("!!! Реквест нашёлся, записываю в Item его ID");
                     newItem.setRequest(itemRequest.get());
-                }else{
+                } else {
                     throw new NotFoundException("Указанного в запросе добаления вещи реквеста не существует");
                 }
-            }else{
+            } else {
                 log.info("!!! Request в JSON-е создания вещи ОТСУТСТВУЕТ");
             }
             newItem.setOwner(user.get());

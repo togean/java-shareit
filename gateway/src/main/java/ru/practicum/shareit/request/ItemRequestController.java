@@ -13,26 +13,27 @@ import ru.practicum.shareit.request.dto.ItemRequestDto;
 public class ItemRequestController {
     private final ItemRequestClient itemRequestClient;
     private final String requestHeader = "X-Sharer-User-Id";
+
     @PostMapping
-    public ResponseEntity<Object> addItemRequest(@RequestHeader(requestHeader) Integer requesterId, @RequestBody ItemRequestDto newRequest){
+    public ResponseEntity<Object> addItemRequest(@RequestHeader(requestHeader) Integer requesterId, @RequestBody ItemRequestDto newRequest) {
         log.info("ItemRequestController: Выполнение запроса на создание нового реквеста на вещь");
         return itemRequestClient.addItemRequest(requesterId, newRequest);
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAllItemRequestsByRequester(@RequestHeader(requestHeader) Integer requesterId){
+    public ResponseEntity<Object> getAllItemRequestsByRequester(@RequestHeader(requestHeader) Integer requesterId) {
         log.info("ItemRequestController: Выполнение запроса на вывод всех реквестов пользователя");
         return itemRequestClient.getAllItemRequestsByRequester(requesterId);
     }
 
     @GetMapping("/{requestId}")
-    public ResponseEntity<Object> getItemRequestById(@RequestHeader(requestHeader) Integer requesterId, @PathVariable("requestId") Integer requestId){
+    public ResponseEntity<Object> getItemRequestById(@RequestHeader(requestHeader) Integer requesterId, @PathVariable("requestId") Integer requestId) {
         log.info("ItemRequestController: Выполнение запроса на вывод информации по реквесту");
         return itemRequestClient.getItemRequestById(requestId);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Object> getAllItemRequests(@RequestHeader(requestHeader) Integer requesterId){
+    public ResponseEntity<Object> getAllItemRequests(@RequestHeader(requestHeader) Integer requesterId) {
         log.info("ItemRequestController: Выполнение запроса на вывод всех реквестов");
         return itemRequestClient.getAllItemRequests(requesterId);
     }

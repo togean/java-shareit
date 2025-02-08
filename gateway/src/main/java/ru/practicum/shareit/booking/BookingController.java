@@ -36,14 +36,14 @@ public class BookingController {
     @GetMapping("/owner")
     public ResponseEntity<Object> getBookingByOwner(@RequestHeader(requestHeader) Integer ownerId, @RequestParam(defaultValue = "ALL") String state) {
         log.info("BookingController: Запрос на получие всех бронирований для вещей пользователя с ID={}", ownerId);
-        BookingStatus status = BookingStatus.from(state).orElseThrow(()->new IllegalArgumentException("Такой статус у брони не предусмотрен:"+state));
+        BookingStatus status = BookingStatus.from(state).orElseThrow(() -> new IllegalArgumentException("Такой статус у брони не предусмотрен:" + state));
         return bookingClient.getBookingByOwner(ownerId, status);
     }
 
     @GetMapping
     public ResponseEntity<Object> getBookingByUser(@RequestHeader(requestHeader) Integer userId, @RequestParam(defaultValue = "ALL") String state) {
         log.info("BookingController: Запрос на получие всех бронирований текущего пользователя с ID={}", userId);
-        BookingStatus status = BookingStatus.from(state).orElseThrow(()->new IllegalArgumentException("Такой статус у броней не предусмотрен:"+state));
+        BookingStatus status = BookingStatus.from(state).orElseThrow(() -> new IllegalArgumentException("Такой статус у броней не предусмотрен:" + state));
         return bookingClient.getBookingByUser(userId, status.name());
     }
 }

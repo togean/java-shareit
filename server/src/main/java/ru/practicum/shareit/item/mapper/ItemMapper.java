@@ -23,14 +23,6 @@ public class ItemMapper {
         return itemDto;
     }
 
-    public ItemDtoShortForRequest itemToItemDtoShortForRequest(Item item) {
-        ItemDtoShortForRequest itemDtoShortForRequest = new ItemDtoShortForRequest();
-        itemDtoShortForRequest.setName(item.getName());
-        itemDtoShortForRequest.setItemOwnerId(item.getOwner().getId());
-        itemDtoShortForRequest.setItemRequestId(item.getRequest()!= null ? item.getRequest().getId() : null);
-        return itemDtoShortForRequest;
-    }
-
     public Item toItem(ItemDto itemDto) {
         Item item = new Item();
         item.setName(itemDto.getName());
@@ -67,16 +59,16 @@ public class ItemMapper {
         return newItem;
     }
 
-    public List<ItemDtoShortForRequest> toListOfItemDtoShortForRequest(List<Item> listOfItems){
+    public List<ItemDtoShortForRequest> toListOfItemDtoShortForRequest(List<Item> listOfItems) {
         List<ItemDtoShortForRequest> listOfShortItem = new ArrayList<>();
-        for(Item item: listOfItems){
+        for (Item item : listOfItems) {
             ItemDtoShortForRequest newShortItem = new ItemDtoShortForRequest();
             newShortItem.setName(item.getName());
             newShortItem.setItemRequestId(item.getRequest().getId());
             newShortItem.setItemOwnerId(item.getOwner().getId());
             listOfShortItem.add(newShortItem);
         }
-        return  listOfShortItem;
+        return listOfShortItem;
     }
 
 }

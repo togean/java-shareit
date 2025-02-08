@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface ItemRequestService {
     ItemRequestDto addItemRequest(Integer requesterId, ItemRequestDto requestToBeAdded);
+
     List<ItemRequestDtoWithItem> getAllItemRequestsByRequester(Integer requesterId);
+
     List<ItemRequestDto> getAllItemRequests(Integer requesterId);
 
     ItemRequestDtoWithItem getItemRequestById(Integer requestId);

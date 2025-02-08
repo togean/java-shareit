@@ -11,6 +11,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     List<Item> findAllByOwner_id(Integer ownerId);
 
     void deleteByOwner_id(Integer ownerId);
+
     Item findByRequest_Id(Integer itemRequestId);
 
     List<Item> findAllByRequestId(Integer requestId);

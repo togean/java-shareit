@@ -44,15 +44,15 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Override
     public List<ItemRequestDtoWithItem> getAllItemRequestsByRequester(Integer requesterId) {
         log.info("ItemRequestServiceImpl: Выполнение запроса на вывод всех реквестов пользователя");
-        if(userService.getUserById(requesterId)!=null){
-            List<ItemRequest> listOfItemRequests =itemRequestRepository.findAllByRequester_Id(requesterId);
+        if (userService.getUserById(requesterId) != null) {
+            List<ItemRequest> listOfItemRequests = itemRequestRepository.findAllByRequester_Id(requesterId);
             List<ItemRequestDtoWithItem> resultList = new ArrayList<>();
-            for(ItemRequest itemRequest:listOfItemRequests){
+            for (ItemRequest itemRequest : listOfItemRequests) {
                 List<ItemDtoShortForRequest> listOfItems = itemMapper.toListOfItemDtoShortForRequest(itemRepository.findAllByRequestId(itemRequest.getId()));
-                ItemRequestDtoWithItem itemRequestShort = itemRequestMapper.toItemRequestDtoWithItems(itemRequest,listOfItems);
+                ItemRequestDtoWithItem itemRequestShort = itemRequestMapper.toItemRequestDtoWithItems(itemRequest, listOfItems);
                 resultList.add(itemRequestShort);
             }
-            log.info("Реквесты пользователя: {}",resultList);
+            log.info("Реквесты пользователя: {}", resultList);
             return resultList;
         }
         throw new NotFoundException("Данный пользователь не найден");
@@ -62,21 +62,21 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     public List<ItemRequestDto> getAllItemRequests(Integer requesterId) {
         log.info("ItemRequestServiceImpl: Выполнение запроса на вывод всех реквестов");
         UserDto user = userService.getUserById(requesterId);
-        if(user!=null){
+        if (user != null) {
             return itemRequestMapper.toListOfItemRequestDto(itemRequestRepository.findAllOrderByCreated_Time(user));
         }
         throw new NotFoundException("Пользователь, запрашивающий реквесты, не найден");
     }
 
     @Override
-    public ItemRequestDtoWithItem getItemRequestById(Integer requestId){
+    public ItemRequestDtoWithItem getItemRequestById(Integer requestId) {
         log.info("ItemRequestServiceImpl: Выполнение запроса на вывод информации по реквесту");
         Optional<ItemRequest> itemRequest = itemRequestRepository.findById(requestId);
-        if(itemRequest.isPresent()){
+        if (itemRequest.isPresent()) {
             log.info("Вот он, реквест по ID={}:{}", requestId, itemRequest);
             List<ItemDtoShortForRequest> listOfItems = itemMapper.toListOfItemDtoShortForRequest(itemRepository.findAllByRequestId(itemRequest.get().getId()));
 
-            if(listOfItems!=null){
+            if (listOfItems != null) {
                 return itemRequestMapper.toItemRequestDtoWithItems(itemRequest.get(), listOfItems);
             }
         }

@@ -51,8 +51,8 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     public ResponseEntity<Object> changeItem(@RequestHeader(requestHeader) Integer userId,
-                              @PathVariable(name = "itemId") Integer itemId,
-                              @RequestBody ItemDto item) {
+                                             @PathVariable(name = "itemId") Integer itemId,
+                                             @RequestBody ItemDto item) {
         log.info("ItemController: Выполнение запроса обновление вещи с id={} на вещь: {}", itemId, item);
         return itemClient.changeItem(userId, itemId, item);
     }

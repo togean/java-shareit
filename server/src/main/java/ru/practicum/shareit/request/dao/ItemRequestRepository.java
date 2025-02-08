@@ -12,6 +12,7 @@ import java.util.List;
 public interface ItemRequestRepository extends JpaRepository<ItemRequest, Integer> {
     @Query("select i from ItemRequest i where i.requester <> ?1 order by i.created")
     List<ItemRequest> findAllOrderByCreated_Time(UserDto user);
+
     List<ItemRequest> findAllByRequester_Id(Integer requester_id);
 
 }

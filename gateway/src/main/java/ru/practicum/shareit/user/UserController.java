@@ -36,7 +36,7 @@ public class UserController {
 
     @PatchMapping("/{userId}")
     public ResponseEntity<Object> changeUser(@PathVariable(name = "userId") String userId,
-                              @RequestBody UserDto user) {
+                                             @RequestBody UserDto user) {
         log.info("UserController: Выполнение запроса на обновление данных пользователя {}", user);
         if (userId != null) {
             Integer userID = Integer.parseInt(userId);
