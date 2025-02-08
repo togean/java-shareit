@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserDto getUserById(@PathVariable(name = "userId") long userId) {
+    public UserDto getUserById(@PathVariable(name = "userId") Integer userId) {
         log.info("UserController: Выполнение запроса на получение данных пользователя с ID={}", userId);
         return userService.getUserById(userId);
     }
@@ -39,14 +39,14 @@ public class UserController {
                               @RequestBody UserDto user) {
         log.info("UserController: Выполнение запроса на обновление данных пользователя {}", user);
         if (userId != null) {
-            long userID = Long.parseLong(userId);
+            Integer userID = Integer.parseInt(userId);
             return userService.changeUser(userID, user);
         }
         return null;
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable(name = "userId") long userId) {
+    public void deleteUser(@PathVariable(name = "userId") Integer userId) {
         log.info("UserController: Выполнение запроса на удаление пользователя с ID={}", userId);
         userService.deleteUser(userId);
     }
