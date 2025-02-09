@@ -177,4 +177,5 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$.authorName").value(newComment.getAuthorName()));
         verify(itemService, times(1)).addNewComment(1, 1, newComment);
     }
+
 }

@@ -84,4 +84,5 @@ public class UserControllerTest2 {
 
         verify(userService, times(1)).changeUser(userToBeEdited.getId(), userToBeEdited);
     }
+
 }
