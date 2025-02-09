@@ -96,7 +96,7 @@ public class RequestServiceTest {
 
     @Test
     void ifTryToGetRequestWithWrongUser_thenThrowsNotFoundException() {
-        Integer UserId = 10;
-        assertThrows(NotFoundException.class, () -> itemRequestService.getAllItemRequestsByRequester(UserId));
+        Integer userId = 10;
+        assertThrows(NotFoundException.class, () -> itemRequestService.getAllItemRequestsByRequester(userId));
     }
 }
