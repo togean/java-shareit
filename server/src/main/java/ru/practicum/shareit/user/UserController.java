@@ -3,6 +3,7 @@ package ru.practicum.shareit.user;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserDto;
 
@@ -16,9 +17,9 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserDto> getAllUsers() {
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         log.info("UserController: Выполнение запроса на получение всех пользователей");
-        return userService.getAllUsers();
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/{userId}")

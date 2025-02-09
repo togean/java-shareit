@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.dao.ItemRepository;
 import ru.practicum.shareit.user.dao.UserRepository;
@@ -31,7 +32,11 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserById(Integer userId) {
         log.info("UserServiceImpl: Запрос на получение пользователя с ID={}", userId);
         Optional<User> user = userRepository.findById(userId);
-        return user.map(userMapper::toUserDto).orElse(null);
+        if(user.isPresent()) {
+            log.info("Пользователь:{}", user.get());
+            return userMapper.toUserDto(user.get());//.orElse(null);
+        }
+        throw new NotFoundException("UserServiceImpl: пользователя с ID="+userId+" не найден");
     }
 
     @Override
