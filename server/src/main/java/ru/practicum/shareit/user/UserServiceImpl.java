@@ -32,11 +32,11 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserById(Integer userId) {
         log.info("UserServiceImpl: Запрос на получение пользователя с ID={}", userId);
         Optional<User> user = userRepository.findById(userId);
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             log.info("Пользователь:{}", user.get());
-            return userMapper.toUserDto(user.get());//.orElse(null);
+            return userMapper.toUserDto(user.get());
         }
-        throw new NotFoundException("UserServiceImpl: пользователя с ID="+userId+" не найден");
+        throw new NotFoundException("UserServiceImpl: пользователя с ID=" + userId + " не найден");
     }
 
     @Override
